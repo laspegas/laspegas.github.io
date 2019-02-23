@@ -1,36 +1,4 @@
-<?php
-    $server = "37.230.162.205:27015";
-    $ip = explode(":", $server);
-    $fp = @fsockopen("udp://$ip[0]", $ip[1], $errno, $errstr);
-    @stream_set_timeout($fp, 1, 0);
-    @stream_set_blocking($fp, true);
-    
-    $server_name = "unknown";
-    $server_online = "<font style=\"color: red;\">Выкл.</font>";
-    $server_player = "??";
-    $server_maxplayer = "??";
-    $server_mapname = "unknown";
-    $player = 0;
-	$maxplayer = 0;
-    if($fp)
-    {
-        fwrite($fp, "\xFF\xFF\xFF\xFFTSource Engine Query\x00");
-        $buffer = fread($fp, 4096);
-        fclose($fp);
-        
-        if($buffer)
-        {
-            $tmp = explode("\x00", $buffer);
-            $place = strlen($tmp[0].$tmp[1].$tmp[2].$tmp[3].$tmp[4]) + 5;
-            
-            $server_name = $tmp[1];
-            $server_online = "<font style=\"color: green;\">Вкл.</font>";
-            $player += $server_player = ord($buffer[$place + 1]);
-            $maxplayer += $server_maxplayer = ord($buffer[$place]);
-            $server_mapname = $tmp[2];
-        }
-    }
-?>
+
 
 <!DOCTYPE html>
 <html lang="ru">
@@ -93,7 +61,6 @@
                 <div id="text"></div>
                 <div id="mb-text" class="h1 text-center">LasPegas</div>
                 <h2 class="text-center"ы>LasPegas - русский DarkRP проект для брони!</h2>
-                <p class="h4 text-center welcome_online">Сейчас играет - <?php echo $player ?> <b class="slash">/</b> <?php echo $maxplayer ?></p>
                 <a href="#" class="btn-1 welcome_connect">Подключайся!</a>
             </div>
         </div>
